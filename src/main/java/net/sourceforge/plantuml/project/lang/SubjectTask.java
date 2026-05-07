@@ -517,7 +517,7 @@ public class SubjectTask implements Subject<GanttDiagram> {
 				new SentenceHappensDate(), new SentenceEnds(), new SentenceTaskEndsOnlyRelative(),
 				new SentenceTaskEndsAbsolute(), new SentenceIsColored(), new SentenceIsColoredForCompletion(),
 				new SentenceIsDeleted(), new SentenceIsForTask(), new SentenceLinksTo(), new SentenceOccurs(),
-				new SentenceDisplayOnSameRowAs(), new SentencePausesAbsoluteDate(),
+				new SentenceDisplayOnSameRowAs(), new SentenceDisplayOnRow(), new SentencePausesAbsoluteDate(),
 				new SentencePausesAbsoluteIntervals(), new SentencePausesAbsoluteIntervalsSmart(),
 				new SentencePausesDayOfWeek(), new SentenceIsDisplayedAs());
 	}

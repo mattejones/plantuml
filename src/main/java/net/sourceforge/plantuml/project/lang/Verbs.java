@@ -66,6 +66,7 @@ public class Verbs {
 	public static Verbs are = new Verbs(new RegexLeaf("are"), new UBrexLeaf("are"));
 	public static Verbs areColored = new Verbs(new RegexLeaf("are[%s]+colou?red"), new UBrexLeaf("are 〇+〴s colo〇?ured"));
 	public static Verbs displayOnSameRowAs = new Verbs(new RegexLeaf("displays?[%s]+on[%s]+same[%s]+row[%s]+as"), new UBrexLeaf("display〇?s 〇+〴s on 〇+〴s same 〇+〴s row 〇+〴s as"));
+    public static Verbs displaysOnRow = new Verbs(new RegexLeaf("displays?[%s]+on[%s]+row"), new UBrexLeaf("display〇?s 〇+〴s on 〇+〴s row"));
 	public static Verbs ends = new Verbs(new RegexLeaf("ends"), new UBrexLeaf("ends"));
 	public static Verbs happens = new Verbs(new RegexLeaf("happens"), new UBrexLeaf("happens"));
 	public static Verbs is = new Verbs(new RegexLeaf("is"), new UBrexLeaf("is"));

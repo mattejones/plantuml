@@ -274,14 +274,10 @@ public class GanttDiagram extends TitledDiagram implements GanttStyle {
 					TimePoint.ofStartOfDay(this.timeBounds.getMinDay()), defaultCompletion);
 			if (currentGroup != null)
 				currentGroup.addTask(result);
-			
-			if (currentRow != null) {
-				if (currentRow.getAnchor() == null)
-					currentRow.setAnchor(result);
-				else
-					result.putInSameRowAs(currentRow.getAnchor());
-				}
-				
+
+			if (currentRow != null)
+				assignTaskToRow(result, currentRow.getName());
+
 				this.modelData.putTask(code, result);
 
 			if (previous != null)
@@ -348,6 +344,24 @@ public class GanttDiagram extends TitledDiagram implements GanttStyle {
 		this.currentRow = null;
 		return CommandExecutionResult.ok();
 
+	}
+
+	public TaskRow getExistingRow(String name) {
+    return modelData.getRow(name);
+
+	}
+
+	public CommandExecutionResult assignTaskToRow(Task task, String rowName) {
+    	final TaskRow row = modelData.getRow(rowName);
+   		if (row == null)
+        	return CommandExecutionResult.error("No such row " + rowName);
+
+    	if (row.getAnchor() == null)
+    	    row.setAnchor(task);
+    	else
+    	    task.putInSameRowAs(row.getAnchor());
+
+    	return CommandExecutionResult.ok();
 	}
 
 	public void addContraint(GanttConstraint constraint) {
