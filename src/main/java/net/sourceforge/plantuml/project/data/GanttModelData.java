@@ -45,6 +45,7 @@ import java.util.Map;
 import net.sourceforge.plantuml.project.GanttConstraint;
 import net.sourceforge.plantuml.project.core.Resource;
 import net.sourceforge.plantuml.project.core.Task;
+import net.sourceforge.plantuml.project.core.TaskRow;
 import net.sourceforge.plantuml.project.core.TaskCode;
 import net.sourceforge.plantuml.project.core.TaskImpl;
 import net.sourceforge.plantuml.project.core.TaskSeparator;
@@ -52,13 +53,15 @@ import net.sourceforge.plantuml.project.time.TimePoint;
 
 /**
  * Value object containing the core domain data of a Gantt diagram: tasks,
- * resources, and constraints.
+ * resources, rows, and constraints.
  */
 public class GanttModelData {
 
 	private final List<GanttConstraint> constraints = new ArrayList<>();
 	private final Map<TaskCode, Task> tasks = new LinkedHashMap<>();
 	private final Map<String, Resource> resources = new LinkedHashMap<>();
+	//TODO: consider separate layout data class
+	private final Map<String, TaskRow> rows = new LinkedHashMap<>();
 
 	public Collection<Task> getTasks() {
 		return Collections.unmodifiableCollection(tasks.values());
@@ -104,6 +107,14 @@ public class GanttModelData {
 			result += task2.loadForResource(res, i);
 		}
 		return result;
+	}
+
+	public void putRow(String name, TaskRow row) {
+		rows.put(name, row);
+	}
+
+	public TaskRow getRow(String name) {
+		return rows.get(name);
 	}
 
 	public Collection<GanttConstraint> getConstraintsForTask(Task task) {

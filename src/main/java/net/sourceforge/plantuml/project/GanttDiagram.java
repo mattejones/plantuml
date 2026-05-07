@@ -67,6 +67,7 @@ import net.sourceforge.plantuml.project.core.Task;
 import net.sourceforge.plantuml.project.core.TaskAttribute;
 import net.sourceforge.plantuml.project.core.TaskCode;
 import net.sourceforge.plantuml.project.core.TaskGroup;
+import net.sourceforge.plantuml.project.core.TaskRow;
 import net.sourceforge.plantuml.project.core.TaskImpl;
 import net.sourceforge.plantuml.project.core.TaskInstant;
 import net.sourceforge.plantuml.project.core.TaskSeparator;
@@ -121,6 +122,7 @@ public class GanttDiagram extends TitledDiagram implements GanttStyle {
 	private Task it;
 	private Resource they;
 	private TaskGroup currentGroup = null;
+	private TaskRow currentRow = null;
 
 	// ------------------------------------------------------------------------
 	// constants / patterns
@@ -272,8 +274,15 @@ public class GanttDiagram extends TitledDiagram implements GanttStyle {
 					TimePoint.ofStartOfDay(this.timeBounds.getMinDay()), defaultCompletion);
 			if (currentGroup != null)
 				currentGroup.addTask(result);
-
-			this.modelData.putTask(code, result);
+			
+			if (currentRow != null) {
+				if (currentRow.getAnchor() == null)
+					currentRow.setAnchor(result);
+				else
+					result.putInSameRowAs(currentRow.getAnchor());
+				}
+				
+				this.modelData.putTask(code, result);
 
 			if (previous != null)
 				forceTaskOrder(previous, result);
@@ -320,6 +329,25 @@ public class GanttDiagram extends TitledDiagram implements GanttStyle {
 		this.currentGroup = this.currentGroup.getParent();
 
 		return CommandExecutionResult.ok();
+	}
+
+	public CommandExecutionResult addRow(String name) {
+		if (this.currentRow != null)
+            return CommandExecutionResult.error("Already in row. rows can not be nested");
+
+		this.currentRow = new TaskRow(name);
+		modelData.putRow(name, currentRow);
+		return CommandExecutionResult.ok();
+
+	}
+
+	public CommandExecutionResult endRow() {
+		if (this.currentRow == null)
+			return CommandExecutionResult.error("No row to be closed");
+
+		this.currentRow = null;
+		return CommandExecutionResult.ok();
+
 	}
 
 	public void addContraint(GanttConstraint constraint) {
